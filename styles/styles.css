@@ -1,0 +1,92 @@
+#header{
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+    z-index: 15;
+    position: fixed;
+    width: 100%;
+    background-color: rgb(49, 78, 206);
+    border-bottom: 1px solid rgba(69, 85, 98, 0.15);
+    padding: 0 0 0 10px;
+    box-shadow: 0 0 4px 3px #ccc;
+}
+
+body{
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #fafafa;
+    overflow: auto;
+}
+
+*{
+scrollbar-width: thin;
+scrollbar-color: blue orange;
+}
+
+*::-webkit-scrollbar {
+width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+background: orange;
+}
+
+*::-webkit-scrollbar-thumb {
+background-color: blue;
+border-radius: 20px;
+border: 3px solid orange;
+}
+
+.employee_header{
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+    height: 56px;
+}
+
+.employee_header:hover{
+    background-color: #f0f0f0;
+}
+
+.preview_header{
+    text-align: left;
+    font-size: 12px;
+    font-weight: lighter;
+    height: 54px; 
+}
+
+.preview_header:hover{
+    background-color: #f0f0f0
+}
+
+
+#employee_row{
+    height: 48px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 100;
+}
+
+#preview_row{
+    height: 48px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 100;
+    color: #c2c2c2;
+}
+
+#employee_row:hover{
+    background-color: #f0f0f0;
+}
+
+table,
+th,
+td {
+    border-collapse: collapse;
+    border-bottom: 1px solid;
+    border-color: rgba(69, 85, 98, 0.15);
+}
+
+th, td {
+    padding-left: 25px;
+}
