@@ -5,42 +5,51 @@ use crate::{component::header::Header, model::employee::Employee, repository::Re
 pub fn widget() -> Html {
     let employees_state: UseStateHandle<Option<Vec<Employee>>> = use_state_eq(|| None);
 
-    employees_state.set(Some(vec![Employee{
-        id: 1,
-        first_name: Some("Zalupa".to_string()),
-        last_name: Some("kek".to_string()),
-        email: "asdasd".to_string(),
-        bitrix_user_id: Some(64),
-        call_gear_employees: None,
-        is_hidden: false,
-    }]));
+    // employees_state.set(Some(vec![Employee{
+    //     id: 1,
+    //     first_name: Some("Zalupa".to_string()),
+    //     last_name: Some("kek".to_string()),
+    //     email: "asdasd".to_string(),
+    //     bitrix_user_id: Some(64),
+    //     call_gear_employees: None,
+    //     is_hidden: false,
+    // }]));
     
-    // {
-    //     let employees_state = employees_state.clone();
-    //     use_effect(
-    //         || {
-    //             wasm_bindgen_futures::spawn_local(async move {
-    //                 let fetched_users = Repository::get_employees().await;
-    //                 employees_state.set(Some(fetched_users));
-    //             });
-    //         }
-    //     );
-    // }
+    let first_load = use_state(|| true);
+    let employees_state_clone = employees_state.clone();
+
+    use_effect(
+        move || {
+
+
+            if *first_load {
+                wasm_bindgen_futures::spawn_local(async move {
+                    gloo::console::log!("request");
+                    let fetched_users = Repository::get_employees(0, 0, false).await;
+                    let fetched_users = Repository::get_employees(fetched_users.total, 0, false).await;
+                    employees_state_clone.set(Some(fetched_users.data));
+                });
+                first_load.set(false);
+            }
+        }
+    );
 
     let table = match (*employees_state).clone(){
         Some(content) => html!(
             <table style="width: 40%;">
                 <tr>
-                    <th class="employee_header">{"Сотрудник"}</th>
-                    <th class="employee_header">{"Внутренний номер"}</th>
-                    <th class="employee_header">{"Роль"}</th>
-                    <th class="employee_header">{"Спрятан"}</th>
+                    <th class="employee_header">
+                        {"Сотрудник ↑"}
+                    </th>
+                    <th class="employee_header">{"Внутренний номер ↓"}</th>
+                    <th class="employee_header">{"Роль "}</th>
+                    <th class="employee_header">{"Спрятан "}</th>
                 </tr>
                 {content.iter().map(|emp: &Employee| 
                     html!(
                         <tr id="employee_row">
                             <td>{format!("{} {}", emp.first_name.clone().unwrap_or_default(), emp.last_name.clone().unwrap_or_default())}</td>
-                            <td>{emp.bitrix_user_id.unwrap_or_default()}</td>
+                            <td>{emp.call_gear_employee_id.unwrap_or_default()}</td>
                             <td></td>
                             <td>{emp.is_hidden}</td>
                         </tr>
@@ -49,13 +58,13 @@ pub fn widget() -> Html {
             </table>
         ),
         None => html!(
-            <h1>{"Not data yet"}</h1>
+            <h1>{"No data yet"}</h1>
         )
     };
     html!{
         <>
             <Header/>
-            <div style="display: flex; justify-content: center">
+            <div style="display: flex; justify-content: center; overflow-x: hidden; overflow-y: scroll; height: calc(100vh - 55px)">
                 {table}
             </div>
         </>

@@ -5,15 +5,15 @@ use crate::model::employee::Employee;
 pub fn preview() -> Html {
     let employees_state:UseStateHandle<Option<Vec<Employee>>> = use_state_eq(|| None);
     
-    employees_state.set(Some(vec![Employee{
-        id: 1,
-        first_name: Some("Zalupa".to_string()),
-        last_name: Some("kek".to_string()),
-        email: "asdasd".to_string(),
-        bitrix_user_id: Some(64),
-        call_gear_employees: None,
-        is_hidden: false,
-    }]));
+    // employees_state.set(Some(vec![Employee{
+    //     id: 1,
+    //     first_name: Some("Zalupa".to_string()),
+    //     last_name: Some("kek".to_string()),
+    //     email: "asdasd".to_string(),
+    //     bitrix_user_id: Some(64),
+    //     call_gear_employees: None,
+    //     is_hidden: false,
+    // }]));
 
     let table = match (*employees_state).clone(){
         Some(content) => html!(

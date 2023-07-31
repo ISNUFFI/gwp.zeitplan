@@ -6,7 +6,7 @@ mod page;
 mod model;
 mod repository;
 
-use crate::page::{widget::Widget, preview::Preview};
+use crate::page::{widget::Widget, preview::Preview, test::Test};
 
 #[derive(Clone, Routable, PartialEq)]
 enum Route {
@@ -14,12 +14,15 @@ enum Route {
     Widget,
     #[at("/preview")]
     Preview,
+    #[at("/test")]
+    Test,
 }
 
 fn switch(route: Route) -> Html{
     match route{
         Route::Widget => html!(<Widget/>),
         Route::Preview => html!(<Preview/>),
+        Route::Test => html!(<Test/>)
     }
 }
 
